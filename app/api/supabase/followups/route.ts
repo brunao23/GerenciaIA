@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     const supabase = createBiaSupabaseServerClient()
 
     const { data: followups, error } = await supabase
-      .from("bia_vox_folow_normal")
+      .from("robson_vox_folow_normal")
       .select("*")
       .not("last_mensager", "is", null)
       .order("last_mensager", { ascending: false })
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
     }
 
     const { data: chatHistories, error: chatError } = await supabase
-      .from("bia_voxn8n_chat_histories")
+      .from("robson_voxn8n_chat_histories")
       .select("session_id, message")
       .order("id", { ascending: true })
 

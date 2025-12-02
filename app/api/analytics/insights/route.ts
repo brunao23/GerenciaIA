@@ -285,7 +285,7 @@ export async function GET(req: Request) {
         // Busca dados de chats
         // Aumentado para 10000 para garantir histórico
         const { data: chats, error } = await supabase
-            .from("bia_voxn8n_chat_histories")
+            .from("robson_voxn8n_chat_histories")
             .select("*")
             .order("id", { ascending: false }) // Mais recentes primeiro
             .limit(10000)

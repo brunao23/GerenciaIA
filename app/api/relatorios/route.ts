@@ -85,17 +85,17 @@ export async function GET(request: NextRequest) {
     const supabase = createBiaSupabaseServerClient()
 
     const { data: chats, error: chatsError } = await supabase
-      .from("bia_voxn8n_chat_histories")
+      .from("robson_voxn8n_chat_histories")
       .select("session_id, message, id")
       .order("id", { ascending: true })
 
     if (chatsError) throw chatsError
 
-    const { data: agendamentos, error: agendamentosError } = await supabase.from("bia_vox_agendamentos").select("*")
+    const { data: agendamentos, error: agendamentosError } = await supabase.from("robson_vox_agendamentos").select("*")
 
     if (agendamentosError) throw agendamentosError
 
-    const { data: followups, error: followupsError } = await supabase.from("bia_vox_folow_normal").select("*")
+    const { data: followups, error: followupsError } = await supabase.from("robson_vox_folow_normal").select("*")
 
     if (followupsError) throw followupsError
 

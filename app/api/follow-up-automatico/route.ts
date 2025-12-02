@@ -84,10 +84,10 @@ async function criarFollowUpJobs(agendamento: any) {
   const supabase = createSupabaseClient()
 
   try {
-    const { error: tableCheckError } = await supabase.from("bia_vox_lembretes").select("id").limit(1)
+    const { error: tableCheckError } = await supabase.from("robson_vox_lembretes").select("id").limit(1)
 
     if (tableCheckError && tableCheckError.message.includes("does not exist")) {
-      console.log("[v0] Tabela bia_vox_lembretes não existe, pulando criação de lembretes")
+      console.log("[v0] Tabela robson_vox_lembretes não existe, pulando criação de lembretes")
       return []
     }
   } catch (tableError) {
@@ -129,7 +129,7 @@ async function criarFollowUpJobs(agendamento: any) {
   }
 
   if (jobs.length > 0) {
-    const { error } = await supabase.from("bia_vox_lembretes").insert(jobs)
+    const { error } = await supabase.from("robson_vox_lembretes").insert(jobs)
 
     if (error) {
       console.error("[v0] Erro ao criar lembretes:", error)
@@ -147,16 +147,16 @@ async function verificarECriarLembretesAutomaticos() {
 
   try {
     // Verificar se a tabela de lembretes existe
-    const { error: tableCheckError } = await supabase.from("bia_vox_lembretes").select("id").limit(1)
+    const { error: tableCheckError } = await supabase.from("robson_vox_lembretes").select("id").limit(1)
 
     if (tableCheckError && tableCheckError.message.includes("does not exist")) {
-      console.log("[v0] Tabela bia_vox_lembretes não existe, não é possível criar lembretes")
+      console.log("[v0] Tabela robson_vox_lembretes não existe, não é possível criar lembretes")
       return { success: false, message: "Tabela de lembretes não existe" }
     }
 
     // Buscar todos os agendamentos que ainda não têm lembretes criados
     const { data: agendamentos, error: agendamentosError } = await supabase
-      .from("bia_vox_agendamentos")
+      .from("robson_vox_agendamentos")
       .select("*")
       .order("created_at", { ascending: false })
 
@@ -170,7 +170,7 @@ async function verificarECriarLembretesAutomaticos() {
     for (const agendamento of agendamentos || []) {
       // Verificar se já existem lembretes para este agendamento
       const { data: lembretesExistentes, error: lembretesError } = await supabase
-        .from("bia_vox_lembretes")
+        .from("robson_vox_lembretes")
         .select("id")
         .eq("agendamento_id", agendamento.id)
 
@@ -213,7 +213,7 @@ export async function POST(request: NextRequest) {
     if (action === "criar_jobs") {
       // Buscar o agendamento
       const { data: agendamento, error: agendamentoError } = await supabase
-        .from("bia_vox_agendamentos")
+        .from("robson_vox_agendamentos")
         .select("*")
         .eq("id", agendamento_id)
         .single()
@@ -238,10 +238,10 @@ export async function POST(request: NextRequest) {
 
     if (action === "processar_pendentes") {
       try {
-        const { error: tableCheckError } = await supabase.from("bia_vox_lembretes").select("id").limit(1)
+        const { error: tableCheckError } = await supabase.from("robson_vox_lembretes").select("id").limit(1)
 
         if (tableCheckError && tableCheckError.message.includes("does not exist")) {
-          console.log("[v0] Tabela bia_vox_lembretes não existe, retornando sem processar")
+          console.log("[v0] Tabela robson_vox_lembretes não existe, retornando sem processar")
           return NextResponse.json({
             success: true,
             message: "Tabela de lembretes não existe, nenhum lembrete processado",
@@ -261,7 +261,7 @@ export async function POST(request: NextRequest) {
       const agora = new Date().toISOString()
 
       const { data: jobsPendentes, error: jobsError } = await supabase
-        .from("bia_vox_lembretes")
+        .from("robson_vox_lembretes")
         .select("*")
         .eq("status", "pendente")
         .lte("data_envio", agora)
@@ -291,18 +291,18 @@ export async function POST(request: NextRequest) {
           const result = await response.json()
 
           if (result.success) {
-            await supabase.from("bia_vox_lembretes").update({ status: "enviado" }).eq("id", job.id)
+            await supabase.from("robson_vox_lembretes").update({ status: "enviado" }).eq("id", job.id)
 
             enviados++
             console.log(`[v0] Lembrete ${job.tipo_lembrete} enviado para ${job.nome} (${job.contato})`)
           } else {
-            await supabase.from("bia_vox_lembretes").update({ status: "erro" }).eq("id", job.id)
+            await supabase.from("robson_vox_lembretes").update({ status: "erro" }).eq("id", job.id)
 
             erros++
             console.error(`[v0] Erro ao enviar lembrete para ${job.contato}:`, result.message)
           }
         } catch (error) {
-          await supabase.from("bia_vox_lembretes").update({ status: "erro" }).eq("id", job.id)
+          await supabase.from("robson_vox_lembretes").update({ status: "erro" }).eq("id", job.id)
 
           erros++
           console.error(`[v0] Erro ao processar lembrete ${job.id}:`, error)
@@ -337,10 +337,10 @@ export async function GET(request: NextRequest) {
     const supabase = createSupabaseClient()
 
     try {
-      const { error: tableCheckError } = await supabase.from("bia_vox_lembretes").select("id").limit(1)
+      const { error: tableCheckError } = await supabase.from("robson_vox_lembretes").select("id").limit(1)
 
       if (tableCheckError && tableCheckError.message.includes("does not exist")) {
-        console.log("[v0] Tabela bia_vox_lembretes não existe, retornando dados vazios")
+        console.log("[v0] Tabela robson_vox_lembretes não existe, retornando dados vazios")
 
         if (action === "listar") {
           return NextResponse.json({
@@ -386,7 +386,7 @@ export async function GET(request: NextRequest) {
 
     if (action === "listar") {
       const { data: jobs, error } = await supabase
-        .from("bia_vox_lembretes")
+        .from("robson_vox_lembretes")
         .select("*")
         .order("data_envio", { ascending: true })
         .limit(50)
@@ -402,7 +402,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (action === "estatisticas") {
-      const { data: stats, error } = await supabase.from("bia_vox_lembretes").select("status")
+      const { data: stats, error } = await supabase.from("robson_vox_lembretes").select("status")
 
       if (error) {
         throw error

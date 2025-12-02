@@ -84,7 +84,7 @@ function extractContactName(messages: any[]): string {
 
 async function getDirectChatsData() {
   try {
-    console.log("[v0] Buscando dados diretamente da tabela bia_voxn8n_chat_histories...")
+    console.log("[v0] Buscando dados diretamente da tabela robson_voxn8n_chat_histories...")
 
     const supabase = createBiaSupabaseServerClient()
 
@@ -96,7 +96,7 @@ async function getDirectChatsData() {
 
     for (; ;) {
       const { data: chunk, error } = await supabase
-        .from("bia_voxn8n_chat_histories")
+        .from("robson_voxn8n_chat_histories")
         .select("session_id, message, id")
         .order("id", { ascending: true })
         .range(from, to)
@@ -228,11 +228,11 @@ async function getDirectChatsData() {
 
 async function getDirectFollowupsData() {
   try {
-    console.log("[v0] Buscando dados diretamente da tabela bia_vox_folow_normal...")
+    console.log("[v0] Buscando dados diretamente da tabela robson_vox_folow_normal...")
 
     const supabase = createBiaSupabaseServerClient()
 
-    const { data, error } = await supabase.from("bia_vox_folow_normal").select("*").limit(5000)
+    const { data, error } = await supabase.from("robson_vox_folow_normal").select("*").limit(5000)
 
     if (error) {
       console.error("[v0] Erro ao buscar dados de follow-ups:", error)
@@ -315,8 +315,8 @@ export async function GET() {
     const supabase = createBiaSupabaseServerClient()
 
     const [agRes, notificationsRes] = await Promise.all([
-      supabase.from("bia_vox_agendamentos").select("*").limit(5000),
-      supabase.from("bia_vox_notifications").select("*").limit(5000),
+      supabase.from("robson_vox_agendamentos").select("*").limit(5000),
+      supabase.from("robson_vox_notifications").select("*").limit(5000),
     ])
 
     const agendamentos = agRes.data?.length || 0

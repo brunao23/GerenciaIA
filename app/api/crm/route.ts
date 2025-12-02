@@ -158,7 +158,7 @@ export async function GET(req: Request) {
 
         while (hasMore) {
             const { data: chats, error } = await supabase
-                .from("bia_voxn8n_chat_histories")
+                .from("robson_voxn8n_chat_histories")
                 .select("*")
                 .order("id", { ascending: false })
                 .range(page * pageSize, (page + 1) * pageSize - 1)

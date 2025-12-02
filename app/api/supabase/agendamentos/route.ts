@@ -32,7 +32,7 @@ export async function GET(req: Request) {
     const dayStart = searchParams.get("dayStart")
     const dayEnd = searchParams.get("dayEnd")
 
-    const candidates = ["bia_vox_agendamentos"]
+    const candidates = ["robson_vox_agendamentos"]
     let rows: any[] | null = null
     let lastError: any = null
 

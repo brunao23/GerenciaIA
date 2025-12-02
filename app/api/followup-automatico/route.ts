@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
     const agora = new Date()
     const { data: agendamentos, error } = await supabase
-      .from("bia_vox_agendamentos")
+      .from("robson_vox_agendamentos")
       .select("*")
       .eq("status", "agendado")
       .not("dia", "is", null)

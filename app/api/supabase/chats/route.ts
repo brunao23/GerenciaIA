@@ -395,7 +395,7 @@ export async function GET(req: Request) {
 
       try {
         const res = await supabase
-          .from("bia_voxn8n_chat_histories")
+          .from("robson_voxn8n_chat_histories")
           .select("session_id, message, id", { count: "planned" })
           .order("id", { ascending: false }) // Mudado para descendente para pegar mensagens mais recentes primeiro
           .range(from, to)

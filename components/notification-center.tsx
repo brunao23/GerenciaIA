@@ -42,10 +42,10 @@ export default function NotificationCenter() {
 
     // Novas mensagens
     const chChats = supa
-      .channel("realtime:bia_voxn8n_chat_histories")
+      .channel("realtime:robson_voxn8n_chat_histories")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "bia_voxn8n_chat_histories" },
+        { event: "INSERT", schema: "public", table: "robson_voxn8n_chat_histories" },
         (payload: PostgresChangePayload<any>) => {
           const row = payload.new
           const message = row?.message ?? {}
@@ -80,10 +80,10 @@ export default function NotificationCenter() {
 
     // Novos agendamentos
     const chAg = supa
-      .channel("realtime:bia_vox_agendamentos")
+      .channel("realtime:robson_vox_agendamentos")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "bia_vox_agendamentos" },
+        { event: "INSERT", schema: "public", table: "robson_vox_agendamentos" },
         (payload: PostgresChangePayload<any>) => {
           const r = payload.new
           const nome = r?.nome_aluno ?? r?.nome_responsavel ?? "Novo agendamento"
@@ -103,10 +103,10 @@ export default function NotificationCenter() {
 
     // Follow-ups
     const chFollow = supa
-      .channel("realtime:bia_vox_folow_normal")
+      .channel("realtime:robson_vox_folow_normal")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "bia_vox_folow_normal" },
+        { event: "INSERT", schema: "public", table: "robson_vox_folow_normal" },
         (payload: PostgresChangePayload<any>) => {
           const r = payload.new
           const numero = r?.numero ?? "sem número"

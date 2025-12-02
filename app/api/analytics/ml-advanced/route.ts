@@ -184,7 +184,7 @@ export async function POST(req: Request) {
 
         // Busca dados
         const { data: chats, error } = await supabase
-            .from("bia_voxn8n_chat_histories")
+            .from("robson_voxn8n_chat_histories")
             .select("*")
             .order("id", { ascending: true })
             .limit(5000)

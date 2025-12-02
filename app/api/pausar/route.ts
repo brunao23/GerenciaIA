@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
     const supabase = createBiaSupabaseServerClient()
 
-    let query = supabase.from("pausar_biavox").select("*")
+    let query = supabase.from("pausar_robsonvox").select("*")
 
     if (numero) {
       query = query.eq("numero", numero)
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     const supabase = createBiaSupabaseServerClient()
 
     const { data, error } = await supabase
-      .from("pausar_biavox")
+      .from("pausar_robsonvox")
       .upsert(
         {
           numero,
@@ -95,7 +95,7 @@ export async function PUT(request: NextRequest) {
       updateData.vaga = vaga === true || vaga === "true"
     }
 
-    const { data, error } = await supabase.from("pausar_biavox").update(updateData).eq("numero", numero).select()
+    const { data, error } = await supabase.from("pausar_robsonvox").update(updateData).eq("numero", numero).select()
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
@@ -119,7 +119,7 @@ export async function DELETE(request: NextRequest) {
 
     const supabase = createBiaSupabaseServerClient()
 
-    const { error } = await supabase.from("pausar_biavox").delete().eq("numero", numero)
+    const { error } = await supabase.from("pausar_robsonvox").delete().eq("numero", numero)
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })

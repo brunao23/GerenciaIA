@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { data: agendamentosExistentes, error: existentesError } = await supabase
-      .from("bia_vox_agendamentos")
+      .from("robson_vox_agendamentos")
       .select("contato")
 
     if (existentesError) {
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     console.log("[v0] Buscando conversas da Bia com vitórias...")
 
     const { data: conversasRaw, error: conversasError } = await supabase
-      .from("bia_voxn8n_chat_histories")
+      .from("robson_voxn8n_chat_histories")
       .select("*")
       .limit(500)
       .order("id", { ascending: false })
@@ -306,7 +306,7 @@ export async function POST(request: NextRequest) {
         })
 
         const { data: novoAgendamento, error: insertError } = await supabase
-          .from("bia_vox_agendamentos")
+          .from("robson_vox_agendamentos")
           .insert(dadosAgendamento)
           .select()
           .maybeSingle()

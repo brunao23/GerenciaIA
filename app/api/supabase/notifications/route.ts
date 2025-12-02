@@ -9,8 +9,8 @@ export async function GET(req: Request) {
     const limit = Number(searchParams.get("limit") ?? 20)
 
     const [list, unread] = await Promise.all([
-      supabase.from("bia_vox_notifications").select("*").order("created_at", { ascending: false }).limit(limit),
-      supabase.from("bia_vox_notifications").select("*", { count: "exact", head: true }).eq("read", false),
+      supabase.from("robson_vox_notifications").select("*").order("created_at", { ascending: false }).limit(limit),
+      supabase.from("robson_vox_notifications").select("*", { count: "exact", head: true }).eq("read", false),
     ])
 
     if (list.error) throw list.error
@@ -43,10 +43,10 @@ export async function PATCH(req: Request) {
     let res
     if (all) {
       console.log("[v0] Marcando todas as notificações não lidas como lidas...")
-      res = await supabase.from("bia_vox_notifications").update({ read: true }).eq("read", false)
+      res = await supabase.from("robson_vox_notifications").update({ read: true }).eq("read", false)
     } else {
       console.log("[v0] Marcando notificações específicas como lidas:", ids)
-      res = await supabase.from("bia_vox_notifications").update({ read: true }).in("id", ids!)
+      res = await supabase.from("robson_vox_notifications").update({ read: true }).in("id", ids!)
     }
 
     console.log("[v0] Resultado da query Supabase:", { error: res.error, count: res.count })
@@ -84,7 +84,7 @@ export async function DELETE(req: Request) {
     }
 
     console.log("[v0] Removendo todas as notificações...")
-    const res = await supabase.from("bia_vox_notifications").delete().neq("id", "00000000-0000-0000-0000-000000000000")
+    const res = await supabase.from("robson_vox_notifications").delete().neq("id", "00000000-0000-0000-0000-000000000000")
 
     console.log("[v0] Resultado da query DELETE Supabase:", { error: res.error, count: res.count })
 
